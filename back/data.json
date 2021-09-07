@@ -1,0 +1,17 @@
+{
+  "shop_name": "Shop",
+  "items": [
+    {
+      "name": "Tomato",
+      "quantity": 10,
+      "unit": "Kg",
+      "mrp": 25
+    },
+    {
+      "name": "Potato",
+      "quantity": 15,
+      "unit": "Kg",
+      "mrp": 35
+    }
+  ]
+}
