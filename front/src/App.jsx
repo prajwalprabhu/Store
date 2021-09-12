@@ -26,9 +26,13 @@ function App() {
   const [shop_name, setShop_name] = useState("");
   const [data, setData] = useState([]);
   async function getData() {
-    let _data = await (await axios.get("/init")).data;
-    setShop_name(_data.shop_name);
-    setData(_data.items);
+    try {
+      let _data = await (await axios.get("/init")).data;
+      setShop_name(_data.shop_name);
+      setData(_data.items);
+    } catch {
+      alert("Server is Down");
+    }
   }
   useEffect(() => {
     getData();
@@ -36,8 +40,13 @@ function App() {
   const search = async () => {
     let searchText = searchRef.current.value;
     if (searchText !== "") {
-      let _data = (await axios.get(`/search/${searchRef.current.value}`)).data;
-      setData(_data.items);
+      try {
+        let _data = (await axios.get(`/search/${searchRef.current.value}`))
+          .data;
+        setData(_data.items);
+      } catch {}
+    } else if (data.length === 0) {
+      getData();
     }
   };
   return (
@@ -61,6 +70,8 @@ function App() {
         ref={searchRef}
       />
       <button onClick={search}>Search</button>
+      <br />
+
       <Item items={data}></Item>
     </div>
   );

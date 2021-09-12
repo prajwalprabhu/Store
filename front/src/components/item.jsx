@@ -2,10 +2,6 @@ import React from "react";
 
 export default function Item({ items }) {
   return (
-    // <div>
-    //   <h1>Hello World</h1>
-
-    // </div>
     <table border={1}>
       <tr>
         <th>Name</th>
