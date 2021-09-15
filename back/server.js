@@ -1,14 +1,17 @@
-import express from "express";
-import { readFileSync, writeFile } from "fs";
+const express = require("express");
+const { readFileSync, writeFileSync } = require("fs");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+// const { json } = bodyParser;
 let app = express();
 app.use(cors());
-import cors from "cors";
-import { parse } from "path";
+app.use(bodyParser.json());
+// import { parse } from "path";
 const getData = () => {
   return JSON.parse(readFileSync("./data.json"));
 };
 const writeData = (obj) => {
-  writeFile("./data.json", JSON.stringify(obj));
+  writeFileSync("./data.json", JSON.stringify(obj));
 };
 const searchData = (search) => {
   let { items } = getData();
@@ -35,22 +38,12 @@ app.get("/search/:pattern", (req, res) => {
   console.log(req.params);
   res.send(searchData(req.params.pattern));
 });
-app.get("/new/:_data", (req, res) => {
-  let { _data } = req.params;
-  _data = JSON.parse(_data);
-  if (
-    _data.name !== undefined &&
-    _data.quantity !== undefined &&
-    _data.mrp !== undefined &&
-    _data.unit !== undefined
-  ) {
-    let oldData = getData();
-    oldData.push(data);
-    writeData(oldData);
-    res.send("");
-  } else {
-    res.status(404);
-  }
+app.post("/new/", (req, res) => {
+  console.log(req.body);
+  let _data = getData();
+  _data.items.push(req.body);
+
+  writeData(_data);
 });
 app.listen(8000, () => {
   console.log("Started Server");
