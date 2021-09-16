@@ -1,19 +1,34 @@
-const express = require("express");
-const { readFileSync, writeFileSync } = require("fs");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-// const { json } = bodyParser;
+import express from "express"
+import {readFileSync,writeFileSync} from "fs"
+import bodyParser from "body-parser"
+import cors from "cors"
+
+
+interface item
+  {
+    name: string,
+    quantity: number,
+    unit: string,
+    mrp: number,
+  }
+
+export interface DataItem {
+shop_name: string,
+  items:item[]
+
+}
+
 let app = express();
 app.use(cors());
 app.use(bodyParser.json());
 // import { parse } from "path";
-const getData = () => {
-  return JSON.parse(readFileSync("./data.json"));
+const getData = ():DataItem => {
+  return JSON.parse(readFileSync("./data.json").toString());
 };
-const writeData = (obj) => {
+const writeData = (obj:DataItem) => {
   writeFileSync("./data.json", JSON.stringify(obj));
 };
-const searchData = (search) => {
+const searchData = (search:string) => {
   let { items } = getData();
   let result = items.map((value) => {
     if (value.name.match(search) != null) {

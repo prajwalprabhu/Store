@@ -1,7 +1,20 @@
 import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import Home from './components/home'
-import NewItem from './components/newITem'
+import Home from './components/Home'
+import NewItem from './components/NewItem'
+interface item
+  {
+    name: string,
+    quantity: number,
+    unit: string,
+    mrp: number,
+  }
+
+export interface DataItem {
+shop_name: string,
+  items:item[]
+
+}
 
 function App() {
   return (

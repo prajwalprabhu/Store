@@ -1,8 +1,12 @@
 import React from "react";
-
-export default function Item({ items }) {
+import {DataItem} from "../App"
+import "./itemStyle.css"
+interface ItemProp{
+  items:DataItem["items"]
+}
+export default function Item({ items }:ItemProp) {
   return (
-    <table border={1}>
+    <table >
       <tr>
         <th>Name</th>
         <th>MRP</th>

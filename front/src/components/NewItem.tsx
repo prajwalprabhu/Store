@@ -1,11 +1,12 @@
 import { useRef } from "react";
 import axios from "../axios";
 export default function NewItem() {
-  const name = useRef(null);
-  const quntity = useRef(null);
-  const mrp = useRef(null);
-  const unit = useRef(null);
+  const name = useRef<HTMLInputElement>(null);
+  const quntity = useRef<HTMLInputElement>(null);
+  const mrp = useRef<HTMLInputElement>(null);
+  const unit = useRef<HTMLInputElement>(null);
   const submit = () => {
+    if (mrp.current && name.current && quntity.current && unit.current){
     let _mrp = parseInt(mrp.current.value);
     console.log(_mrp);
 
@@ -21,10 +22,11 @@ export default function NewItem() {
       unit: unit.current.value,
       mrp: _mrp,
     });
+  }
   };
   return (
     <div>
-      <table border={1}>
+      <table>
         <tr>
           <td>
             <h2>Name</h2>

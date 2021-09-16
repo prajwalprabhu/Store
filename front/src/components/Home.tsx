@@ -1,4 +1,5 @@
-import Item from "./item";
+import Item from "./Item";
+import {DataItem} from "../App"
 import { useEffect, useRef, useState } from "react";
 import axios from "../axios";
 // let data = {
@@ -20,12 +21,12 @@ import axios from "../axios";
 // };
 
 export default function Home() {
-  const searchRef = useRef(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const [shop_name, setShop_name] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState< DataItem["items"]>([]);
   async function getData() {
     try {
-      let _data = await (await axios.get("/init")).data;
+      let _data = await (await axios.get("/init")).data as DataItem;
       setShop_name(_data.shop_name);
       setData(_data.items);
     } catch {
@@ -36,27 +37,35 @@ export default function Home() {
     getData();
   }, []);
   const search = async () => {
-    let searchText = searchRef.current.value;
-    if (searchText !== "") {
-      try {
-        let _data = (await axios.get(`/search/${searchRef.current.value}`))
-          .data;
-        setData(_data.items);
-      } catch {}
-    } else if (data.length === 0) {
-      getData();
+    if (searchRef.current) {
+      let searchText = searchRef.current.value;
+      if (searchText !== "") {
+        try {
+          let _data = (await axios.get(`/search/${searchRef.current.value}`))
+            .data;
+          setData(_data.items);
+        } catch { }
+      } else if (data.length === 0) {
+        getData();
+      }
     }
   };
   return (
     <div className='App'>
-      <h1>
+      <h1
+      style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center"
+        }}
+      >
         <b>
           <u>
-            <center>
+
               Welcome <br />
               to <br />
               {shop_name}
-            </center>
+
           </u>
         </b>
       </h1>
