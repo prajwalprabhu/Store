@@ -1,5 +1,5 @@
 import Item from "./Item";
-import {DataItem} from "../App"
+import {DataItem, Item as ItemType} from "../App"
 import { useEffect, useRef, useState } from "react";
 import axios from "../axios";
 // let data = {
@@ -22,8 +22,18 @@ import axios from "../axios";
 
 export default function Home() {
   const searchRef = useRef<HTMLInputElement>(null);
+
   const [shop_name, setShop_name] = useState("");
   const [data, setData] = useState< DataItem["items"]>([]);
+  function editData(id:number,_data:ItemType){
+    let a =[...data]
+    a[id]=_data
+    setData(a)
+    axios.post("/edit",{
+      id:id,
+      data:_data
+    })
+  }
   async function getData() {
     try {
       let _data = await (await axios.get("/init")).data as DataItem;
@@ -82,7 +92,7 @@ export default function Home() {
       <button onClick={search}>Search</button>
       <br />
 
-      <Item items={data}></Item>
+      <Item items={data} editFun={editData} ></Item>
     </div>
   );
 }

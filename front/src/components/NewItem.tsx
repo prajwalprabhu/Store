@@ -8,20 +8,20 @@ export default function NewItem() {
   const submit = () => {
     if (mrp.current && name.current && quntity.current && unit.current){
     let _mrp = parseInt(mrp.current.value);
+    let _quantity = parseInt(quntity.current.value)
     console.log(_mrp);
 
-    if (!Number.isNaN(_mrp)) {
-      console.log(_mrp);
+    if (!Number.isNaN(_mrp) && !Number.isNaN(_quantity)) {
+      axios.post("/new", {
+        name: name.current.value,
+        quantity: _quantity,
+        unit: unit.current.value,
+        mrp: _mrp,
+      });
     } else {
-      alert("Enter a valid mrp");
+      alert("Enter a valid mrp or quantity");
       return;
     }
-    axios.post("/new", {
-      name: name.current.value,
-      quntiy: quntity.current.value,
-      unit: unit.current.value,
-      mrp: _mrp,
-    });
   }
   };
   return (

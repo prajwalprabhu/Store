@@ -54,12 +54,18 @@ app.get("/search/:pattern", (req, res) => {
   res.send(searchData(req.params.pattern));
 });
 app.post("/new/", (req, res) => {
-  console.log(req.body);
+
   let _data = getData();
   _data.items.push(req.body);
 
   writeData(_data);
 });
+app.post("/edit/",(req,res)=>{
+  const{id,data}=req.body
+  let _data = getData()
+  _data.items[id]=data
+  writeData(_data)
+})
 app.listen(8000, () => {
   console.log("Started Server");
 });
