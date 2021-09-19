@@ -5,14 +5,15 @@ import "./itemStyle.css"
 interface ItemProp {
   items: DataItem["items"]
   editFun:(id:number,_data:ItemType)=>void
+  rmFun:(id:number)=>void
 }
 
-export default function Item({ items ,editFun}: ItemProp) {
+export default function Item({ items ,editFun,rmFun}: ItemProp) {
   const [showEdit, setShowEdit] = useState(false)
   const [id, setId] = useState(0)
   // const [itemState, setItemState] = useState<ItemType>()
   const done = (data:ItemType) => {
-    console.log("Done"+ JSON.stringify(data))
+    setShowEdit(false)
     editFun(id,data)
   }
 
@@ -26,6 +27,7 @@ export default function Item({ items ,editFun}: ItemProp) {
           <th>MRP</th>
           <th>Quantity</th>
           <th>Edit</th>
+          <th>Remove</th>
         </tr>
         {items.map((item, i) => {
           return (
@@ -38,6 +40,11 @@ export default function Item({ items ,editFun}: ItemProp) {
                 setShowEdit(true)
                 setId(i)
                 }}>Edit</button></td>
+                <td>
+                <button onClick={()=>{rmFun(i)}}>
+                Remove
+                </button>
+                </td>
             </tr>
           );
         })}

@@ -66,6 +66,13 @@ app.post("/edit/",(req,res)=>{
   _data.items[id]=data
   writeData(_data)
 })
+app.post("/rm",(req,res)=>{
+  const {id}=req.body
+  let _data = getData()
+  let a =  _data.items.filter((_,i)=>{return i!==id})
+  _data.items=a
+  writeData(_data)
+})
 app.listen(8000, () => {
   console.log("Started Server");
 });

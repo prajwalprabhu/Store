@@ -25,6 +25,16 @@ export default function Home() {
 
   const [shop_name, setShop_name] = useState("");
   const [data, setData] = useState< DataItem["items"]>([]);
+  function removeData(id:number){
+    let _data = data.filter((_,i)=>{return i!==id})
+
+    setData(_data)
+    console.log(JSON.stringify(data))
+    axios.post("/rm",{
+      id:id
+    })
+
+  }
   function editData(id:number,_data:ItemType){
     let a =[...data]
     a[id]=_data
@@ -80,7 +90,7 @@ export default function Home() {
         </b>
       </h1>
       <a href='/new'>New</a>
-      <br />
+      <br/>
       <input
         type='search'
         name='search'
@@ -92,7 +102,7 @@ export default function Home() {
       <button onClick={search}>Search</button>
       <br />
 
-      <Item items={data} editFun={editData} ></Item>
+      <Item items={data} editFun={editData} rmFun={removeData}></Item>
     </div>
   );
 }

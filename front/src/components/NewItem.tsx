@@ -18,6 +18,7 @@ export default function NewItem() {
         unit: unit.current.value,
         mrp: _mrp,
       });
+      
     } else {
       alert("Enter a valid mrp or quantity");
       return;
