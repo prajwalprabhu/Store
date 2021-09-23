@@ -1,7 +1,8 @@
 import Item from "./Item";
-import {DataItem, Item as ItemType} from "../App"
+import { DataItem, Item as ItemType } from "../App";
 import { useEffect, useRef, useState } from "react";
 import axios from "../axios";
+import Header from "./Header";
 // let data = {
 //   shop_name: "Shop",
 //   items: [
@@ -24,29 +25,32 @@ export default function Home() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   const [shop_name, setShop_name] = useState("");
-  const [data, setData] = useState< DataItem["items"]>([]);
-  function removeData(id:number){
-    let _data = data.filter((_,i)=>{return i!==id})
+  const [data, setData] = useState<DataItem["items"]>([]);
+  function removeData(id: number) {
+    if (window.confirm("Do You really want to remove this item")){
+    let _data = data.filter((_, i) => {
+      return i !== id;
+    });
 
-    setData(_data)
-    console.log(JSON.stringify(data))
-    axios.post("/rm",{
-      id:id
-    })
-
+    setData(_data);
+    console.log(JSON.stringify(data));
+    axios.post("/rm", {
+      id: id,
+    });
+    }
   }
-  function editData(id:number,_data:ItemType){
-    let a =[...data]
-    a[id]=_data
-    setData(a)
-    axios.post("/edit",{
-      id:id,
-      data:_data
-    })
+  function editData(id: number, _data: ItemType) {
+    let a = [...data];
+    a[id] = _data;
+    setData(a);
+    axios.post("/edit", {
+      id: id,
+      data: _data,
+    });
   }
   async function getData() {
     try {
-      let _data = await (await axios.get("/init")).data as DataItem;
+      let _data = (await (await axios.get("/init")).data) as DataItem;
       setShop_name(_data.shop_name);
       setData(_data.items);
     } catch {
@@ -56,50 +60,19 @@ export default function Home() {
   useEffect(() => {
     getData();
   }, []);
-  const search = async () => {
-    if (searchRef.current) {
-      let searchText = searchRef.current.value;
-      if (searchText !== "") {
-        try {
-          let _data = (await axios.get(`/search/${searchRef.current.value}`))
-            .data;
-          setData(_data.items);
-        } catch { }
-      } else if (data.length === 0) {
-        getData();
-      }
+  const search = async (query: string) => {
+    if (query !== "") {
+      try {
+        let _data = (await axios.get(`/search/${query}`)).data;
+        setData(_data.items);
+      } catch {}
+    } else {
+      getData();
     }
   };
   return (
-    <div className='App'>
-      <h1
-      style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center"
-        }}
-      >
-        <b>
-          <u>
-
-              Welcome <br />
-              to <br />
-              {shop_name}
-
-          </u>
-        </b>
-      </h1>
-      <a href='/new'>New</a>
-      <br/>
-      <input
-        type='search'
-        name='search'
-        id='search'
-        placeholder='Search'
-        ref={searchRef}
-        onKeyDown={search}
-      />
-      <button onClick={search}>Search</button>
+    <div className="App">
+      <Header shop_name={shop_name} fun={search} is_search={true} />
       <br />
 
       <Item items={data} editFun={editData} rmFun={removeData}></Item>
