@@ -1,5 +1,6 @@
 import { useState } from "react";
-
+import {Redirect} from "react-router-dom";
+import { useEffect } from "react";
 import { DataItem, Item as ItemType } from "../App";
 import Edit from "./Edit";
 import "./itemStyle.css";
@@ -12,6 +13,19 @@ interface ItemProp {
 export default function Item({ items, editFun, rmFun }: ItemProp) {
   const [showEdit, setShowEdit] = useState(false);
   const [id, setId] = useState(0);
+  const redirect = ()=>{
+  if (items.length === 0){
+    if (window.confirm("No Item found would you like to add ? ")){
+        return <Redirect to="/new"/>
+    }
+  }
+
+    
+  }
+useEffect(()=>{
+    redirect()
+},[])
+
   // const [itemState, setItemState] = useState<ItemType>()
   const done = (data: ItemType) => {
     setShowEdit(false);

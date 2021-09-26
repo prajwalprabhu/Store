@@ -1,1 +1,6 @@
-{"shop_name":"Shop","items":[{"name":"Potato","quantity":15,"unit":"Kg","mrp":350},{"name":"Tomato","quantity":120,"unit":"Kg","mrp":24},{"name":"Lays","quantity":12,"unit":"Packets","mrp":10}]}
+{
+  "shop_name": "Shop",
+  "items": [
+  ]
+}
+
