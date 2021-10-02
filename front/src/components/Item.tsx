@@ -22,9 +22,6 @@ export default function Item({ items, editFun, rmFun }: ItemProp) {
 
     
   }
-useEffect(()=>{
-    redirect()
-},[])
 
   // const [itemState, setItemState] = useState<ItemType>()
   const done = (data: ItemType) => {
