@@ -47,7 +47,6 @@ app.get("/init", (req, res) => {
   res.send(getData());
 });
 app.get("/search/:pattern", (req, res) => {
-  console.log(req.params);
   res.send(searchData(req.params.pattern));
 });
 app.post("/new/", (req, res) => {

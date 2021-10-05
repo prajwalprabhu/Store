@@ -1,8 +1,9 @@
 import Item from "./Item";
 import { DataItem, Item as ItemType } from "../App";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../axios";
 import Header from "./Header";
+//Example Data
 // let data = {
 //   shop_name: "Shop",
 //   items: [
@@ -22,21 +23,19 @@ import Header from "./Header";
 // };
 
 export default function Home() {
-  const searchRef = useRef<HTMLInputElement>(null);
-
   const [shop_name, setShop_name] = useState("");
   const [data, setData] = useState<DataItem["items"]>([]);
   function removeData(id: number) {
-    if (window.confirm("Do You really want to remove this item")){
-    let _data = data.filter((_, i) => {
-      return i !== id;
-    });
+    if (window.confirm("Do You really want to remove this item")) {
+      let _data = data.filter((_, i) => {
+        return i !== id;
+      });
 
-    setData(_data);
-    console.log(JSON.stringify(data));
-    axios.post("/rm", {
-      id: id,
-    });
+      setData(_data);
+      console.log(JSON.stringify(data));
+      axios.post("/rm", {
+        id: id,
+      });
     }
   }
   function editData(id: number, _data: ItemType) {

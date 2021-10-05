@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRef } from "react";
 import React from "react";
-import { Navbar, Nav, Button } from "react-bootstrap";
+
 interface headerProp {
   shop_name: string;
   fun: (query: string) => void;
@@ -12,9 +12,9 @@ export default function Header({ shop_name, fun, is_search }: headerProp) {
     return (
       <React.Fragment>
         <input type="text" ref={searchRef} />
-        <Button variant="outline-success" onClick={search}>
+        <button className="btn-success" onClick={search}>
           Search
-        </Button>
+        </button>
       </React.Fragment>
     );
   };
@@ -25,20 +25,38 @@ export default function Header({ shop_name, fun, is_search }: headerProp) {
     }
   };
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand href="#">{shop_name}</Navbar.Brand>
-      <Navbar.Toggle aria-controls="navbarScroll" />
-      <Navbar.Collapse id="navbarScroll">
-        <Nav
-          className="mr-auto my-2 my-lg-0"
-          style={{ maxHeight: "100px" }}
-          navbarScroll
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand" href="/#">
+          Navbar
+        </a>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
-          <Nav.Link href="/#">Home</Nav.Link>
-          <Nav.Link href="/new/#">New</Nav.Link>
-        </Nav>
-        <Nav className="justify-content-end">{is_search && <Search />}</Nav>
-      </Navbar.Collapse>
-    </Navbar>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item">
+              <a className="nav-link active" aria-current="page" href="/#">
+                Home
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/new">
+                New
+              </a>
+            </li>
+          </ul>
+          <Search />
+        </div>
+      </div>
+    </nav>
   );
 }

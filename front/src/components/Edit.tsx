@@ -1,6 +1,5 @@
 import { Item } from "../App";
 import { useRef } from "react";
-import { Table } from "react-bootstrap";
 interface EditProps {
   item: Item;
   id: number;

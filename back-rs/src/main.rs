@@ -7,7 +7,7 @@ use rocket::serde::json::Json;
 use rocket::tokio::fs::{File, OpenOptions};
 use rocket::tokio::io::{AsyncReadExt, AsyncWriteExt, BufReader};
 use rocket::{Request, Response};
-use types::{DataItem, Item};
+use types::{DataItem, EditPostRequest, Item, RmPostRequest};
 pub struct CORS;
 #[rocket::async_trait]
 impl Fairing for CORS {
@@ -48,7 +48,12 @@ async fn get_data() -> Option<DataItem> {
     }
 }
 async fn write_data(data: DataItem) -> i32 {
-    if let Ok(mut file) = OpenOptions::new().write(true).open("./data.json").await {
+    if let Ok(mut file) = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open("./data.json")
+        .await
+    {
         file.write_all(serde_json::to_string(&data).unwrap().as_bytes())
             .await
             .expect("Failed to write");
@@ -59,7 +64,6 @@ async fn write_data(data: DataItem) -> i32 {
 }
 #[get("/")]
 async fn index() -> &'static str {
-    println!("get");
     "Hello, world!"
 }
 #[get("/init")]
@@ -82,8 +86,6 @@ async fn search(pattern: String) -> String {
 
 #[post("/new", format = "application/json", data = "<new_item_json>")]
 async fn new_item(new_item_json: Json<Item>) -> String {
-    println!("{:?}", new_item_json);
-
     let mut data = get_data().await.unwrap();
     data.items.push(Item {
         name: new_item_json.name.clone(),
@@ -94,9 +96,42 @@ async fn new_item(new_item_json: Json<Item>) -> String {
     write_data(data).await;
     String::from("Done")
 }
+
+#[post("/rm", format = "json", data = "<index>")]
+async fn rm_item(index: Json<RmPostRequest>) {
+    let mut _data = get_data().await.unwrap();
+    _data.items.remove(index.id);
+    write_data(_data).await;
+}
+
+#[post("/edit", format = "json", data = "<data>")]
+async fn edit_item(data: Json<EditPostRequest>) {
+    let mut _data = get_data().await.unwrap();
+    _data.items[data.id] = data.data.clone();
+    write_data(_data).await;
+}
+#[options("/new")]
+async fn new_item_option() {}
+#[options("/rm")]
+async fn rm_item_option() {}
+#[options("/edit")]
+async fn edit_item_option() {}
 #[launch]
 fn rocket() -> _ {
     rocket::build()
-        .mount("/", routes![index, init, search, new_item])
+        .mount(
+            "/",
+            routes![
+                index,
+                init,
+                search,
+                new_item,
+                new_item_option,
+                rm_item,
+                rm_item_option,
+                edit_item,
+                edit_item_option
+            ],
+        )
         .attach(CORS)
 }

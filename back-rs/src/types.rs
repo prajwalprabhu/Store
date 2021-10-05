@@ -1,8 +1,5 @@
-//use serde_derive::{Serialize,Deserialize};
 use rocket::serde::{Deserialize, Serialize};
-//use std::iter::Iterator;
-
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Item {
     pub name: String,
     pub quantity: i64,
@@ -10,14 +7,17 @@ pub struct Item {
     pub mrp: i64,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct DataItem {
     pub shop_name: String,
     pub items: Vec<Item>,
 }
-//impl Iterator for Item{
-//    type Item = super::Item;
-//    fn next(&mut self)->Option<Self::Item>{
-
-//    }
-//}
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct RmPostRequest {
+    pub id: usize,
+}
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct EditPostRequest {
+    pub id: usize,
+    pub data: Item,
+}
